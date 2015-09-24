@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <substitutionProperty name="log.base" value="d://logs/"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.base}/dms.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.base}/%d{yyyy-MM-dd}_dms.%i.text</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>300</maxIndex>
+        </rollingPolicy>
+        <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <MaxFileSize>30MB</MaxFileSize>
+        </TimeBasedFileNamingAndTriggeringPolicy>
+        <append>true</append>
+        <encoding>gbk</encoding>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.adtime.dmp.dms">
+        <level value="DEBUG"/>
+    </logger>
+
+    <logger name="java.sql.Connection">
+        <level value="INFO"/>
+    </logger>
+    <logger name="java.sql.Statement">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.mybatis">
+        <level value="INFO"/>
+    </logger>
+    <logger name="o.s.jdbc">
+        <level value="INFO"/>
+    </logger>
+    <logger name="c.a.b.s.b.m.S">
+        <level value="INFO"/>
+    </logger>
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource">
+        <level value="INFO"/>
+    </logger>
+    <logger name="com.ibatis.common.jdbc.ScriptRunner">
+        <level value="INFO"/>
+    </logger>
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate">
+        <level value="INFO"/>
+    </logger>
+    <logger name="com.alibaba.dubbo.common.serialize.support.kryo.KryoFactory">
+        <level value="warn"/>
+    </logger>
+
+
+    <logger name="org.apache.http.wire">
+        <level value="error"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rollingFile"/>
+    </root>
+</configuration>
