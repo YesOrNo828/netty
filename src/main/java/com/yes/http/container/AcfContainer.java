@@ -71,6 +71,8 @@ public abstract class AcfContainer {
             server.setExecutorThreadCount(8 * (executorMultiple < 1 ? 1 : executorMultiple));
             server.setMaxRequestSize(Integer.MAX_VALUE);
 
+
+
             server.start();
 
             deployResource();
