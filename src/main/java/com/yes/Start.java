@@ -20,6 +20,7 @@ public class Start {
         long start = System.currentTimeMillis();
         initLogBack();
         try {
+
             logger.info("Start system initialize spring context.......");
             ClassPathXmlApplicationContext apxac = new ClassPathXmlApplicationContext("classpath*:META-INF/spring/*.xml");
             logger.info("System started initialize spring context success...........total time cost {} S", (System.currentTimeMillis() - start) / 1000);
