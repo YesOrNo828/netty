@@ -4,15 +4,15 @@ import java.io.*;
 import java.net.*;
 
 public class SiteFileFetch extends Thread {
-    SiteInfoBean siteInfoBean = null; // ÎÄ¼şĞÅÏ¢ Bean
-    long[] nStartPos; // ¿ªÊ¼Î»ÖÃ
-    long[] nEndPos; // ½áÊøÎ»ÖÃ
-    FileSplitterFetch[] fileSplitterFetch; // ×ÓÏß³Ì¶ÔÏó
-    long nFileLength; // ÎÄ¼ş³¤¶È
-    boolean bFirst = true; // ÊÇ·ñµÚÒ»´ÎÈ¡ÎÄ¼ş
-    boolean bStop = false; // Í£Ö¹±êÖ¾
-    File tmpFile; // ÎÄ¼şÏÂÔØµÄÁÙÊ±ĞÅÏ¢
-    DataOutputStream output; // Êä³öµ½ÎÄ¼şµÄÊä³öÁ÷
+    SiteInfoBean siteInfoBean = null; // æ–‡ä»¶ä¿¡æ¯ Bean
+    long[] nStartPos; // å¼€å§‹ä½ç½®
+    long[] nEndPos; // ç»“æŸä½ç½®
+    FileSplitterFetch[] fileSplitterFetch; // å­çº¿ç¨‹å¯¹è±¡
+    long nFileLength; // æ–‡ä»¶é•¿åº¦
+    boolean bFirst = true; // æ˜¯å¦ç¬¬ä¸€æ¬¡å–æ–‡ä»¶
+    boolean bStop = false; // åœæ­¢æ ‡å¿—
+    File tmpFile; // æ–‡ä»¶ä¸‹è½½çš„ä¸´æ—¶ä¿¡æ¯
+    DataOutputStream output; // è¾“å‡ºåˆ°æ–‡ä»¶çš„è¾“å‡ºæµ
 
     public SiteFileFetch(SiteInfoBean bean) throws IOException {
         siteInfoBean = bean;
@@ -28,11 +28,11 @@ public class SiteFileFetch extends Thread {
     }
 
     public void run() {
-        // »ñµÃÎÄ¼ş³¤¶È
-        // ·Ö¸îÎÄ¼ş
-        // ÊµÀı FileSplitterFetch
-        // Æô¶¯ FileSplitterFetch Ïß³Ì
-        // µÈ´ı×ÓÏß³Ì·µ»Ø
+        // è·å¾—æ–‡ä»¶é•¿åº¦
+        // åˆ†å‰²æ–‡ä»¶
+        // å®ä¾‹ FileSplitterFetch
+        // å¯åŠ¨ FileSplitterFetch çº¿ç¨‹
+        // ç­‰å¾…å­çº¿ç¨‹è¿”å›
         try {
             if (bFirst) {
                 nFileLength = getFileSize();
@@ -50,7 +50,7 @@ public class SiteFileFetch extends Thread {
                     nEndPos[nEndPos.length - 1] = nFileLength;
                 }
             }
-            // Æô¶¯×ÓÏß³Ì
+            // å¯åŠ¨å­çº¿ç¨‹
             fileSplitterFetch = new FileSplitterFetch[nStartPos.length];
             for (int i = 0; i < nStartPos.length; i++) {
                 fileSplitterFetch[i] = new FileSplitterFetch(siteInfoBean.getSSiteURL(),
@@ -66,9 +66,9 @@ public class SiteFileFetch extends Thread {
 //            // Utility.log("Thread " +(nPos.length-1) + ",nStartPos = "+nPos[nPos.length-1]+",
 //            nEndPos = " + nFileLength);
             // fileSplitterFetch[nPos.length-1].start();
-            // µÈ´ı×ÓÏß³Ì½áÊø
+            // ç­‰å¾…å­çº¿ç¨‹ç»“æŸ
             //int count = 0;
-            // ÊÇ·ñ½áÊø while Ñ­»·
+            // æ˜¯å¦ç»“æŸ while å¾ªç¯
             boolean breakWhile = false;
             while (!bStop) {
                 write_nPos();
@@ -86,13 +86,13 @@ public class SiteFileFetch extends Thread {
                 //if(count>4)
                 // siteStop();
             }
-            System.err.println("ÎÄ¼şÏÂÔØ½áÊø£¡");
+            System.err.println("æ–‡ä»¶ä¸‹è½½ç»“æŸï¼");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // »ñµÃÎÄ¼ş³¤¶È
+    // è·å¾—æ–‡ä»¶é•¿åº¦
     public long getFileSize() {
         int nFileLength = -1;
         try {
@@ -126,7 +126,7 @@ public class SiteFileFetch extends Thread {
         return nFileLength;
     }
 
-    // ±£´æÏÂÔØĞÅÏ¢£¨ÎÄ¼şÖ¸ÕëÎ»ÖÃ£©
+    // ä¿å­˜ä¸‹è½½ä¿¡æ¯ï¼ˆæ–‡ä»¶æŒ‡é’ˆä½ç½®ï¼‰
     private void write_nPos() {
         try {
             output = new DataOutputStream(new FileOutputStream(tmpFile));
@@ -144,7 +144,7 @@ public class SiteFileFetch extends Thread {
         }
     }
 
-    // ¶ÁÈ¡±£´æµÄÏÂÔØĞÅÏ¢£¨ÎÄ¼şÖ¸ÕëÎ»ÖÃ£©
+    // è¯»å–ä¿å­˜çš„ä¸‹è½½ä¿¡æ¯ï¼ˆæ–‡ä»¶æŒ‡é’ˆä½ç½®ï¼‰
     private void read_nPos() {
         try {
             DataInputStream input = new DataInputStream(new FileInputStream(tmpFile));
@@ -167,7 +167,7 @@ public class SiteFileFetch extends Thread {
         System.err.println("Error Code : " + nErrorCode);
     }
 
-    // Í£Ö¹ÎÄ¼şÏÂÔØ
+    // åœæ­¢æ–‡ä»¶ä¸‹è½½
     public void siteStop() {
         bStop = true;
         for (int i = 0; i < nStartPos.length; i++)
